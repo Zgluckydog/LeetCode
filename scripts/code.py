@@ -1,3 +1,10 @@
+from collections import defaultdict
+
+class ListNode:
+    def __init__(self, val,next=None):
+        self.val = val
+        self.next = next
+
 class Solution(object):
     # 704. 两数之和
     def search(self, nums, target):
@@ -160,9 +167,171 @@ class Solution(object):
         t = ''.join(res)
         return s == t
     # 977. 有序数组的平方
+    def sortedSquares(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        left = 0
+        right = len(nums) - 1
+        res = [-1]*len(nums)
+        resEnd = len(nums) - 1
+        while left <= right:
+            if nums[left]**2 < nums[right]**2:
+                res[resEnd] = nums[right]**2
+                right -=1
+            else :
+                res[resEnd] = nums[left]**2
+                left += 1
+            resEnd -= 1
+        return res
+    # 209. 长度最小的子数组
+    def minSubArrayLen(self, target, nums):
+        """
+        :type target: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        slowIndex = fastIndex = 0
+        tempSum = 0
+        subLength = 0
+        res = float('inf')
+        for fastIndex in range(len(nums)):
+            tempSum+=nums[fastIndex]
+            while tempSum >= target:
+                subLength = fastIndex - slowIndex + 1
+                tempSum -= nums[slowIndex]
+                slowIndex+=1
+                res = min(subLength, res)
+        return res if res != float('inf') else 0
+    # 904.水果成篮
+    def totalFruit(self, fruits):
+        """
+        :type fruits: List[int]
+        :rtype: int
+        """
+        slowIndex = fastIndex = 0
+        res = defaultdict(int)
+        maxLength = 0
+        for fastIndex in range(0,len(fruits)):
+            res[fruits[fastIndex]] += 1
+            while len(res) > 2:
+                res[fruits[slowIndex]] -= 1
+                if res[fruits[slowIndex]] == 0:
+                    res.pop(fruits[slowIndex])
+                slowIndex += 1
+            maxLength = max(fastIndex-slowIndex + 1,maxLength)
+        return maxLength
+    # 76.最小覆盖字串 （看不懂）
+    # 59. 螺旋矩阵 II（生成螺旋数组不需要判断）
+    def generateMatrix(self, n):
+        """
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        res = [[0]*n for _ in range(n)]
+        left, right, up, down = 0, n-1, 0, n-1
+        count = 1
+        while left<=right and up <= down:
+            # 填充上
+            for i in range(left,right+1):
+                res[up][i] = count
+                count+=1
+            up += 1
+            # 填充右
+            for i in range(up,down+1):
+                res[i][right] = count
+                count+=1
+            right -= 1
+            # 填充下
+            for i in range(right,left - 1,-1):
+                res[down][i] = count
+                count+=1
+            down -= 1
+            # 填充左
+            for i in range(down,up-1,-1):
+                res[i][left] = count
+                count+=1
+            left += 1
+        return res
+    # 54. 螺旋矩阵(打印，需要判断后面两组是否还存在）
+    def spiralOrder(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
 
+        left, right, up, down = 0, len(matrix[0]) - 1, 0, len(matrix) - 1
+        res = []
+        while left <= right and up <= down:
+            for i in range(left, right + 1):
+                res.append(matrix[up][i])
+            up += 1
+            for i in range(up, down + 1):
+                res.append(matrix[i][right])
+            right -= 1
+            if up <= down:
+                for i in range(right, left - 1, -1):
+                    res.append(matrix[down][i])
+                down -= 1
+            if left <= right:
+                for i in range(down, up - 1, -1):
+                    res.append(matrix[i][left])
+                left += 1
+        return res
+    # LCR 146. 螺旋遍历二维数组
+    def spiralArray(self, array):
+        """
+        :type array: List[List[int]]
+        :rtype: List[int]
+        """
+        res = []
+        if len(array) == 0 or len(array[0]) == 0: return []
+        left, right, up, down = 0, len(array[0]) - 1, 0, len(array) - 1
+
+        while left <= right and up <= down:
+            for i in range(left, right + 1):
+                res.append(array[up][i])
+            up += 1
+            for i in range(up, down + 1):
+                res.append(array[i][right])
+            right -= 1
+
+            if up <= down:
+                for i in range(right, left - 1, -1):
+                    res.append(array[down][i])
+                down -= 1
+            if left <= right:
+                for i in range(down, up - 1, -1):
+                    res.append(array[i][left])
+                left += 1
+        return res
+
+    # 203. 移除链表元素
+    def removeElements(self, head, val):
+        """
+        :type head: Optional[ListNode]
+        :type val: int
+        :rtype: Optional[ListNode]
+        """
+        dummy = ListNode(0,head)
+        node = dummy
+        while node.next:
+            if node.next.val == val:
+                node.next = node.next.next
+            else:
+                node = node.next
+        return dummy.next
 sol = Solution()
-
-s = "ab#c"
-t = "ad#c"
-print(sol.backspaceCompare(s, t))
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(6)
+head.next.next.next = ListNode(3)
+head.next.next.next.next = ListNode(4)
+head.next.next.next.next.next = ListNode(5)
+head.next.next.next.next.next.next = ListNode(6)
+val = 6
+# res = sol.removeElements(head, val)
+# while res:
+#     print(res.val)
+#     res = res.next
