@@ -18,6 +18,7 @@ class Solution(object):
             else:
                 node = node.next
         return dummy.next
+
 sol = Solution()
 head = ListNode(1)
 head.next = ListNode(2)
