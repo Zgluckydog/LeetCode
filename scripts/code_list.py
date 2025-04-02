@@ -107,20 +107,52 @@ class Solution(object):
             fast = fast.next
         slow.next = slow.next.next
         return dummy_head.next
-
+    # 链表相交
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+        lengthA, lengthB = 0, 0
+        dummy_A = headA
+        dummy_B = headB
+        while dummy_A:
+            lengthA += 1
+            dummy_A = dummy_A.next
+        while dummy_B:
+            lengthB += 1
+            dummy_B = dummy_B.next
+        if lengthA < lengthB:
+            headA, headB = headB, headA
+            lengthA, lengthB = lengthB, lengthA
+        curA = headA
+        n = lengthA - lengthB
+        while n and curA:
+            curA = curA.next
+            n -= 1
+        curB = headB
+        while curA != curB:
+            curA = curA.next
+            curB = curB.next
+        return curA
 
 
 
 sol = Solution()
 head = ListNode(1)
 head.next = ListNode(2)
-head.next.next = ListNode(6)
+head.next.next = ListNode(8)
 head.next.next.next = ListNode(3)
 head.next.next.next.next = ListNode(4)
 head.next.next.next.next.next = ListNode(5)
 head.next.next.next.next.next.next = ListNode(6)
 
-r = sol.removeNthFromEnd(head,1)
-while r:
-    print(r.val)
-    r = r.next
+head1 = ListNode(9)
+head1.next = ListNode(7)
+head1.next.next = ListNode(3)
+head1.next.next.next= ListNode(4)
+head1.next.next.next.next = ListNode(5)
+head1.next.next.next.next.next= ListNode(6)
+
+c = sol.getIntersectionNode(head,head1)
+print(c.val)
