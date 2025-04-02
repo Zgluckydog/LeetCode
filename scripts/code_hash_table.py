@@ -70,3 +70,4 @@ class Solution(object):
             s1[ord(s[i])-ord('a')] +=1
             if s1 == p1: res.append(i-len(p)+1)
         return res
+    # 349. 两个数组的交集
