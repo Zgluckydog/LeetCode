@@ -135,6 +135,27 @@ class Solution(object):
             curA = curA.next
             curB = curB.next
         return curA
+    # 142.环形链表二
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        dummy_head = ListNode(0)
+        dummy_head.next = head
+        fast = dummy_head.next
+        slow = dummy_head.next
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                slow = dummy_head.next
+                while slow!=fast:
+                    fast = fast.next
+                    slow = slow.next
+                return slow
+        return None
+
 
 
 
