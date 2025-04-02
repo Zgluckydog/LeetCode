@@ -93,6 +93,23 @@ class Solution(object):
             pre = dummy_head
             dummy_head = tmp
         return pre
+    # 19. 删除链表的倒数第N个元素
+    def removeNthFromEnd(self, head, n):
+        dummy_head = ListNode(0,head)
+        fast = dummy_head
+        slow = dummy_head
+        while n and fast:
+            fast = fast.next
+            n -=1
+        fast = fast.next
+        while fast:
+            slow = slow.next
+            fast = fast.next
+        slow.next = slow.next.next
+        return dummy_head.next
+
+
+
 
 sol = Solution()
 head = ListNode(1)
@@ -103,7 +120,7 @@ head.next.next.next.next = ListNode(4)
 head.next.next.next.next.next = ListNode(5)
 head.next.next.next.next.next.next = ListNode(6)
 
-r = sol.reverseList(head)
+r = sol.removeNthFromEnd(head,1)
 while r:
     print(r.val)
     r = r.next
