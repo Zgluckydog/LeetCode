@@ -2,6 +2,67 @@ class ListNode:
     def __init__(self, val,next=None):
         self.val = val
         self.next = next
+# 707. 设计链表
+class MyLinkedList(object):
+
+    def __init__(self):
+        self.dummy_head = ListNode()
+        self.size = 0
+
+    def get(self, index):
+        """
+        :type index: int
+        :rtype: int
+        """
+        if index < 0 or index >= self.size:
+            return -1
+        cur = self.dummy_head.next
+        for _ in range(index):
+            cur = cur.next
+        return cur.val
+
+    def addAtHead(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.addAtIndex(0, val)
+
+    def addAtTail(self, val):
+        """
+        :type val: int
+        :rtype: None
+        """
+        self.addAtIndex(self.size, val)
+
+    def addAtIndex(self, index, val):
+        """
+        :type index: int
+        :type val: int
+        :rtype: None
+        """
+        if index > self.size: return
+        if index < 0: index = 0
+        cur = self.dummy_head
+        for _ in range(index):
+            cur = cur.next
+        new_node = ListNode(val, cur.next)
+        cur.next = new_node
+        self.size += 1
+
+    def deleteAtIndex(self, index):
+        """
+        :type index: int
+        :rtype: None
+        """
+        if index < 0 or index >= self.size:
+            return
+        cur = self.dummy_head
+        for _ in range(index):
+            cur = cur.next
+        cur.next = cur.next.next
+        self.size -= 1
+
 class Solution(object):
     # 203. 移除链表元素
     def removeElements(self, head, val):
@@ -18,6 +79,20 @@ class Solution(object):
             else:
                 node = node.next
         return dummy.next
+    # 206. 反转链表
+    def reverseList(self, head):
+        """
+        :type head: Optional[ListNode]
+        :rtype: Optional[ListNode]
+        """
+        dummy_head = head
+        pre = None
+        while dummy_head:
+            tmp = dummy_head.next
+            dummy_head.next = pre
+            pre = dummy_head
+            dummy_head = tmp
+        return pre
 
 sol = Solution()
 head = ListNode(1)
@@ -27,8 +102,8 @@ head.next.next.next = ListNode(3)
 head.next.next.next.next = ListNode(4)
 head.next.next.next.next.next = ListNode(5)
 head.next.next.next.next.next.next = ListNode(6)
-val = 6
-res = sol.removeElements(head, val)
-while res:
-    print(res.val)
-    res = res.next
+
+r = sol.reverseList(head)
+while r:
+    print(r.val)
+    r = r.next

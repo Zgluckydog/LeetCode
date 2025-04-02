@@ -1,4 +1,4 @@
-from scripts.code import Solution
+from scripts.code_array import Solution
 
 nums = [-1,0,3,5,9,12]
 target = 9
