@@ -71,3 +71,144 @@ class Solution(object):
             if s1 == p1: res.append(i-len(p)+1)
         return res
     # 349. 两个数组的交集
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        set1 = set(nums1)
+        set2 = set(nums2)
+
+        inter_set = set1 & set2
+        return list(inter_set)
+    # 350. 两个数组的交集二
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+        res = {}
+        ret = []
+        for i in nums1:
+            res[i] = res.get(i,0) + 1
+        for i in nums2:
+            if res.get(i,0) > 0:
+                ret.append(i)
+                res[i] -= 1
+        return ret
+    # 202.快乐数
+    def getSum(self,n):
+        sum = 0
+        while n:
+            n,r = divmod(n,10)
+            sum += r**2
+        return sum
+    def isHappy(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        res = set()
+        while True:
+            sum = self.getSum(n)
+            if sum == 1: return True
+            if sum in res:
+                return False
+            else:
+                res.add(sum)
+            n = sum
+    # 1. 两数之和
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        res = dict()
+        for index,value in enumerate(nums):
+            temp = target - value
+            if temp in res:
+                return [index, res[temp]]
+            else:
+                res[value] = index
+        return []
+    # 454. 四数相加
+    def fourSumCount(self, nums1, nums2, nums3, nums4):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :type nums3: List[int]
+        :type nums4: List[int]
+        :rtype: int
+        """
+        res = dict()
+        for a in nums1:
+            for b in nums2:
+                res[a+b] = res.get(a+b,0) + 1
+        sum = 0
+        for c in nums3:
+            for d in nums4:
+                if -(c+d) in res:
+                    sum += res[-(c+d)]
+        return sum
+    # 15.三数之和
+    def threeSum(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        result = []
+        nums.sort()
+        for i in range(len(nums)):
+            if nums[i] > 0: return result
+
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            left = i + 1
+            right = len(nums) - 1
+            while left < right:
+                if nums[i] + nums[left] + nums[right] < 0:
+                    left += 1
+                elif nums[i] + nums[left] + nums[right] > 0:
+                    right -= 1
+                else:
+                    result.append([nums[i],nums[left],nums[right]])
+                    while left < right and nums[left] == nums[left+1]: left+=1
+                    while left < right and nums[right] == nums[right-1]: right-=1
+                    left+=1
+                    right-=1
+        return result
+    # 18. 四数之和
+    def fourSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        result = []
+        nums.sort()
+        for i in range(len(nums)):
+            if nums[i] > target and target > 0: break
+            if i > 0 and nums[i] == nums[i - 1]: continue
+            for k in range(i + 1, len(nums)):
+                if nums[i] + nums[k] > target and target > 0: break
+                if k > i + 1 and nums[k] == nums[k - 1]: continue
+                left = k + 1
+                right = len(nums) - 1
+                while left < right:
+                    if nums[i] + nums[k] + nums[left] + nums[right] < target:
+                        left += 1
+                    elif nums[i] + nums[k] + nums[left] + nums[right] > target:
+                        right -= 1
+                    else:
+                        result.append([nums[i], nums[k], nums[left], nums[right]])
+                        while left < right and nums[left] == nums[left + 1]: left += 1
+                        while left < right and nums[right] == nums[right - 1]: right -= 1
+                        left += 1
+                        right -= 1
+        return result
+
+
+
