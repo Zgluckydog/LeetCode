@@ -73,7 +73,50 @@ class Solution(object):
             else : res.pop()
         ret = ''.join(res)
         return ret
-    pass
+    # 150. 逆波兰表达式求值
+    def evalRPN(self, tokens):
+        """
+        :type tokens: List[str]
+        :rtype: int
+        """
+        res = []
+        for c in tokens:
+            if c in ("+", "-", "*", "/"):
+                num1 = res.pop()
+                num2 = res.pop()
+                if c == "+":
+                    res.append(num2 + num1)
+                elif c == "-":
+                    res.append(num2 - num1)
+                elif c == "*":
+                    res.append(num2 * num1)
+                elif c == "/":
+                    # 使用 // 进行整除，确保结果为整数
+                    res.append(int(num2 / float(num1)))
+            else:
+                res.append(int(c))
+        return res.pop()
+    # 239.滑动窗口最大值
+def update_que(kept_que, value):
+    while kept_que and value > kept_que[-1]:
+        kept_que.pop()
+    kept_que.append(value)
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        res = []
+        kept_que = deque()
+        for i in range(len(nums)):
+            update_que(kept_que, nums[i])
+            if i >= k and nums[i - k] == kept_que[0]:
+                kept_que.popleft()
+            if i >= k - 1:
+                res.append(kept_que[0])
+        return res
+
 
 sol = Solution()
 s = "([])"
