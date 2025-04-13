@@ -1,5 +1,12 @@
 # 232.用栈实现队列
 from collections import deque
+import heapq
+
+# 239.滑动窗口最大值
+def update_que(kept_que, value):
+    while kept_que and value > kept_que[-1]:
+        kept_que.pop()
+    kept_que.append(value)
 
 
 class MyQueue(object):
@@ -97,10 +104,6 @@ class Solution(object):
                 res.append(int(c))
         return res.pop()
     # 239.滑动窗口最大值
-def update_que(kept_que, value):
-    while kept_que and value > kept_que[-1]:
-        kept_que.pop()
-    kept_que.append(value)
     def maxSlidingWindow(self, nums, k):
         """
         :type nums: List[int]
@@ -116,9 +119,29 @@ def update_que(kept_que, value):
             if i >= k - 1:
                 res.append(kept_que[0])
         return res
+    # 347. 前k个高频元素
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        map_seq = {}
+        for i in range(len(nums)):
+            map_seq[nums[i]] = map_seq.get(nums[i], 0) + 1
+
+        res = []
+        for key, freq in map_seq.items():
+            heapq.heappush(res, (freq, key))
+            if len(res) > k:
+                heapq.heappop(res)
+        ret = [0] * k
+        for i in range(k - 1, -1, -1):
+            ret[i] = heapq.heappop(res)[1]
+        return ret
 
 
 sol = Solution()
-s = "([])"
+s = [1,1,1,2,2,3]
 
-print(sol.isValid(s))
+print(sol.topKFrequent(s, 2))
